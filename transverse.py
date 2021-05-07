@@ -1,8 +1,10 @@
 import pygame
 from pygame import mixer
-from levels.level1 import level_data1
-from levels.level2 import level_data2
+from levels.levels import *
 from os import path
+
+#list of levels
+niveaux = [level_data1, level_data2]
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
@@ -26,8 +28,8 @@ tile_size = 50
 game_over = 0
 main_menu = True
 score = 0
-level = 1
-max_levels = 2
+level = 0
+max_levels = len(niveaux)
 
 #define colours
 white = (255, 255, 255)
@@ -47,7 +49,8 @@ def reset_level(level):
 	fire_group = pygame.sprite.Group()
 	coin_group = pygame.sprite.Group()
 	exit_group = pygame.sprite.Group()
-	world = World(level_data2)
+	
+	world = World(niveaux[level])
 	player.reset(100, screen_height - 650)
 	return world
 
@@ -410,14 +413,14 @@ while run:
 		if game_over == 1:
 			# reset game and go to next level
 			level += 1
-			if level <= max_levels:
+			if level < max_levels:
 				# reset level
 				world_data = []
 				world = reset_level(level)
 				game_over = 0
 			else:
 				if restart_button.draw():
-					level = 1
+					level = 0
 					# reset level
 					world_data = []
 					world = reset_level(level)
