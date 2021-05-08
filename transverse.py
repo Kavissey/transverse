@@ -4,7 +4,7 @@ from levels.levels import *
 from os import path
 
 #list of levels
-niveaux = [level_data1, level_data2]
+niveaux = [level_data1, level_data2, level_data3, level_data4]
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
@@ -42,6 +42,7 @@ start_img = pygame.image.load('img/start_btn.png')
 exit_img = pygame.image.load('img/exit_btn.png')
 option_img = pygame.image.load('img/option.png')
 credit_img = pygame.image.load('img/credit.png')
+spike_img = pygame.image.load('img/spike.png')
 
 #function to reset level
 def reset_level(level):
@@ -183,6 +184,12 @@ class Player():
 				game_over_fx.play()
 				pygame.mixer.music.stop()
 
+			# check for collision with enemies
+			if pygame.sprite.spritecollide(self, spike_group, False):
+				game_over = -1
+				game_over_fx.play()
+				pygame.mixer.music.stop()
+
 			# check for collision with exit
 			if pygame.sprite.spritecollide(self, exit_group, False):
 				game_over = 1
@@ -246,6 +253,7 @@ class World():
 		coin_img = pygame.image.load('img/coin.png')
 
 		self.enemyList = []
+		self.spikeList = []
 
 		row_count = 0
 		for row in data:
@@ -269,6 +277,10 @@ class World():
 				if tile == 4:
 					exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size // 2))
 					exit_group.add(exit)
+				if tile == 5:
+					spike = Spike(col_count * tile_size+ 23, row_count * tile_size +25)
+					spike_group.add(spike)
+					self.spikeList.append(spike)
 
 
 
@@ -318,12 +330,20 @@ class Exit(pygame.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 
+class Spike(pygame.sprite.Sprite):
+	def __init__(self, x, y):
+		pygame.sprite.Sprite.__init__(self)
+		img = pygame.image.load('img/spike.png')
+		self.image = pygame.transform.scale(img, (tile_size , tile_size ))
+		self.rect = self.image.get_rect()
+		self.rect.center = (x, y)
 
 player = Player(100, screen_height - 500)
 
 fire_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
+spike_group = pygame.sprite.Group()
 
 #load in level data and create world
 
@@ -371,6 +391,7 @@ while run:
 		fire_group.draw(screen)
 		coin_group.draw(screen)
 		exit_group.draw(screen)
+		spike_group.draw(screen)
 
 		# create dummy coin for showing the score
 		score_coin = Coin(tile_size // 2, tile_size // 2)
@@ -396,6 +417,11 @@ while run:
 				world_data = []
 				for e in world.enemyList:
 					fire_group.remove(e)
+				spike_group.empty()
+				coin_group.empty()
+				
+
+
 				world = reset_level(level)
 				game_over = 0
 			else:
