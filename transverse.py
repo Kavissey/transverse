@@ -1,10 +1,10 @@
-import pygame
+import pygame, sys
 from pygame import mixer
 from levels.levels import *
 from os import path
 
 #list of levels
-niveaux = [level_data1, level_data2, level_data3, level_data4]
+niveaux = [level_data1, level_data2, level_data3, level_data4, level_data5]
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
@@ -27,6 +27,7 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 tile_size = 50
 game_over = 0
 main_menu = True
+run = True
 score = 0
 level = 0
 max_levels = len(niveaux)
@@ -43,6 +44,7 @@ exit_img = pygame.image.load('img/exit_btn.png')
 option_img = pygame.image.load('img/option.png')
 credit_img = pygame.image.load('img/credit.png')
 spike_img = pygame.image.load('img/spike.png')
+runstickman_img = pygame.image.load('img/runstickman.png')
 
 #function to reset level
 def reset_level(level):
@@ -59,11 +61,11 @@ def reset_level(level):
 pygame.mixer.music.load('img/music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)
 jump_fx = pygame.mixer.Sound('img/img_jump.wav')
-jump_fx.set_volume(0.5)
+jump_fx.set_volume(0.3)
 game_over_fx = pygame.mixer.Sound('img/img_game_over.wav')
-game_over_fx.set_volume(0.5)
-coin_fx = pygame.mixer.Sound('img/coin.mp3')
 game_over_fx.set_volume(0.3)
+coin_fx = pygame.mixer.Sound('img/coin.mp3')
+game_over_fx.set_volume(0.2)
 xp_fx = pygame.mixer.Sound('img/xp.wav')
 
 #def draw_grid():
@@ -140,6 +142,14 @@ class Player():
 					self.image = self.images_right[self.index]
 				if self.direction == -1:
 					self.image = self.images_left[self.index]
+
+			if key[pygame.K_ESCAPE]:
+				pygame.quit()
+				sys.exit()
+
+
+
+
 
 
 			# handle animation
@@ -223,7 +233,7 @@ class Player():
 		self.index = 0
 		self.counter = 0
 		for num in range(1, 9):
-			img_right = pygame.image.load(f'img/frame-{num}.gif')
+			img_right = pygame.image.load(f'img/frame-{num}.png')
 			img_right = pygame.transform.scale(img_right, (60, 80 ))
 			img_left = pygame.transform.flip(img_right, True, False)
 			self.images_right.append(img_right)
@@ -344,6 +354,7 @@ fire_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
 spike_group = pygame.sprite.Group()
+runstickman_group = pygame.sprite.Group()
 
 #load in level data and create world
 
@@ -353,17 +364,17 @@ world = World(niveaux[0])
 
 # create buttons
 restart_button = Button(screen_width // 2 - 50, screen_height // 2 + -100, restart_img)
-start_button = Button(screen_width // 2 - 20, screen_height // 2, start_img)
-exit_button = Button(screen_width // 2 - 350, screen_height // 2, exit_img)
-option_button = Button(screen_width // 1 - 1200, screen_height // 2 + 10, option_img)
-credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 300, credit_img)
+start_button = Button(screen_width // 2 - 20, screen_height // 2 + -105, start_img)
+exit_button = Button(screen_width // 2 - 350, screen_height // 2 + -105, exit_img)
+option_button = Button(screen_width // 1 - 1200, screen_height // 2 + -50, option_img)
+credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 220, credit_img)
+runstickman_button = Button(screen_width // 1 - 1920, screen_height // 2 + -550, runstickman_img)
 
-run = True
+
 while run:
 
 	clock.tick(fps)
 	screen.blit(bg_img, (0, 0))
-
 
 
 
@@ -375,7 +386,13 @@ while run:
 			main_menu = False
 			xp_fx.play()
 		option_button.draw()
+
+
+
+
+
 		credit_button.draw()
+		runstickman_button.draw()
 	else:
 		world.draw()
 
@@ -392,6 +409,7 @@ while run:
 		coin_group.draw(screen)
 		exit_group.draw(screen)
 		spike_group.draw(screen)
+
 
 		# create dummy coin for showing the score
 		score_coin = Coin(tile_size // 2, tile_size // 2)
@@ -419,6 +437,8 @@ while run:
 					fire_group.remove(e)
 				spike_group.empty()
 				coin_group.empty()
+				exit_group.empty()
+				score = 0
 				
 
 

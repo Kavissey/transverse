@@ -1,3 +1,5 @@
+#!/usr/bin/python3.4
+# Setup Python ----------------------------------------------- #
 import pygame, sys
 
 # Setup pygame/window ---------------------------------------- #
