@@ -127,6 +127,10 @@ class Player():
 	def __init__(self, x, y):
 		self.reset(x, y)
 
+	def set_skin(self, skin):
+		xp_fx.play()
+		self.skin = skin
+
 
 	def update(self, game_over):
 		dx = 0
@@ -266,8 +270,6 @@ class Player():
 		self.in_air = True
 
 
-
-
 class World():
 	def __init__(self, data):
 		self.tile_list = []
@@ -364,7 +366,6 @@ class Spike(pygame.sprite.Sprite):
 		self.rect.center = (x, y)
 
 player = Player(100, screen_height - 500)
-
 fire_group = pygame.sprite.Group()
 coin_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
@@ -451,12 +452,21 @@ while run:
 	if in_skin == True :
 
 		runstickman_button.draw()
-		if skin1_button.draw():
-			player.skin = "skin1"
+		if skin1_button.draw():	
+			player.set_skin("skin1")
+			player.reset(100, screen_height - 650)
+
+
 		if skin2_button.draw():
-			player.skin = "skin2"
+			player.set_skin("skin2")
+			player.reset(100, screen_height - 650)
+
+
 		if skin3_button.draw():
-			player.skin = "skin3"
+			player.set_skin("skin3")
+			player.reset(100, screen_height - 650)
+
+
 
 		if exit_button2.draw():
 			main_menu = True
@@ -478,6 +488,7 @@ while run:
 		world.draw()
 
 		if game_over == 0:
+			player.skin = "skin2"
 			fire_group.update()
 			# update score
 			# check if a coin has been collected
