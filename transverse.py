@@ -32,6 +32,7 @@ run = True
 playing = False
 in_credit = False
 in_skin = False
+in_rules = False
 score = 0
 level = 0
 max_levels = len(niveaux)
@@ -56,6 +57,9 @@ skin3_img = pygame.image.load('img/skin3-1.png')
 creator_img = pygame.image.load('img/creator.png')
 creator2_img = pygame.image.load('img/foggy.png')
 nom_img = pygame.image.load('img/nom.png')
+rules_img = pygame.image.load('img/rules.png')
+rules2_img = pygame.image.load('img/rules2.png')
+rules3_img = pygame.image.load('img/rules3.png')
 
 #function to reset level
 def reset_level(level):
@@ -78,12 +82,6 @@ game_over_fx.set_volume(0.3)
 coin_fx = pygame.mixer.Sound('img/coin.mp3')
 game_over_fx.set_volume(0.2)
 xp_fx = pygame.mixer.Sound('img/xp.wav')
-
-#def draw_grid():
-	#for line in range(0, 40):
-		#pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
-		#pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
-
 
 
 
@@ -385,7 +383,7 @@ exit_button = Button(screen_width // 2 - 350, screen_height // 2 + -105, exit_im
 option_button = Button(screen_width // 1 - 1150, screen_height // 2 + 70, option_img)
 credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 200, credit_img)
 runstickman_button = Button(screen_width // 1 - 1920, screen_height // 2 + -550, runstickman_img)
-skin_button = Button(screen_width // 2 - 150, screen_height // 2 + -80, skin_img)
+skin_button = Button(screen_width // 2 - 150, screen_height // 2 + -10, skin_img)
 exit_button2 = Button(screen_width // 2 - 980, screen_height // 1 + -105, exit_img)
 skin1_button = Button(screen_width // 1 - 1700, screen_height // 2 + -180, skin1_img)
 skin2_button = Button(screen_width // 1 - 1300, screen_height // 2 + -300, skin2_img)
@@ -393,6 +391,10 @@ skin3_button = Button(screen_width // 1 - 800, screen_height // 2 + -300, skin3_
 creator_button = Button(screen_width // 1 - 1380, screen_height // 2 + -500, creator_img)
 creator2_button = Button(screen_width // 1 -1450, screen_height // 2 + -200, creator2_img)
 nom_button = Button(screen_width // 1 -1120, screen_height // 2 + -150, nom_img)
+rules_button = Button(screen_width // 1 -1120, screen_height // 2 + -150, rules_img)
+rules2_button = Button(screen_width // 1 -800, screen_height // 2 + -450, rules2_img)
+rules3_button = Button(screen_width // 1 -2000, screen_height // 2 + -450, rules3_img)
+
 while run:
 
 	clock.tick(fps)
@@ -408,6 +410,7 @@ while run:
 			main_menu = False
 			playing = True
 			xp_fx.play()
+
 		if option_button.draw():
 			main_menu = False
 			in_options = True
@@ -419,10 +422,12 @@ while run:
 		runstickman_button.draw()
 		credit_button.draw()
 
+
 	if in_options == True:
 		# Options menu
 		screen.blit(bg_img, (0,0))
 		runstickman_button.draw()
+
 
 
 		if skin_button.draw():
@@ -433,6 +438,21 @@ while run:
 		if exit_button2.draw():
 			main_menu = True
 			in_options = False
+
+		if rules_button.draw():
+			in_options = False
+			in_rules = True
+
+	if in_rules == True:
+		runstickman_button.draw()
+		rules2_button.draw()
+		rules3_button.draw()
+		if exit_button2.draw():
+			main_menu = True
+			in_options = False
+			in_rules = False
+
+
 
 	if in_credit == True:
 		runstickman_button.draw()
@@ -445,8 +465,7 @@ while run:
 			in_options = False
 			in_skin = False
 			in_credit = False
-
-
+			in_rules = False
 
 
 	if in_skin == True :
@@ -472,12 +491,7 @@ while run:
 			main_menu = True
 			in_options = False
 			in_skin = False
-
-
-
-
-
-
+			in_rules = False
 
 
 
@@ -488,7 +502,6 @@ while run:
 		world.draw()
 
 		if game_over == 0:
-			player.skin = "skin2"
 			fire_group.update()
 			# update score
 			# check if a coin has been collected
@@ -536,19 +549,19 @@ while run:
 
 				world = reset_level(level)
 				game_over = 0
-			else:
-				if restart_button.draw():
-					level = 0
-					# reset level
-					world_data = []
-					world = reset_level(level)
-					game_over = 0
+			else :
+
+				draw_text('YOU WIN!', font, blue, (screen_width // 2) - 140, screen_height // 2)
+				if exit_button2.draw():
+					main_menu = True
+					playing = False
 
 
 
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			run = False
+
 
 	pygame.display.update()
 
