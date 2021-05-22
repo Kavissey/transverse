@@ -28,6 +28,7 @@ tile_size = 50
 game_over = 0
 main_menu = True
 run = True
+playing = False
 score = 0
 level = 0
 max_levels = len(niveaux)
@@ -72,6 +73,14 @@ xp_fx = pygame.mixer.Sound('img/xp.wav')
 	#for line in range(0, 40):
 		#pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size))
 		#pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
+
+
+# Options menu
+def options_menu():
+	screen.blit(bg_img, (0,0))
+
+	if exit_button.draw():
+		main_menu = True
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -384,8 +393,12 @@ while run:
 			run = False
 		if start_button.draw():
 			main_menu = False
+			playing = True
 			xp_fx.play()
-		option_button.draw()
+		if option_button.draw():
+			main_menu = False
+			
+			options_menu()
 
 
 
@@ -393,7 +406,7 @@ while run:
 
 		credit_button.draw()
 		runstickman_button.draw()
-	else:
+	elif playing == True:
 		world.draw()
 
 		if game_over == 0:
