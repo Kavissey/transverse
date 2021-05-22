@@ -27,6 +27,7 @@ font_score = pygame.font.SysFont('Bauhaus 93', 30)
 tile_size = 50
 game_over = 0
 main_menu = True
+in_options = False
 run = True
 playing = False
 score = 0
@@ -75,12 +76,7 @@ xp_fx = pygame.mixer.Sound('img/xp.wav')
 		#pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height))
 
 
-# Options menu
-def options_menu():
-	screen.blit(bg_img, (0,0))
 
-	if exit_button.draw():
-		main_menu = True
 
 def draw_text(text, font, text_col, x, y):
 	img = font.render(text, True, text_col)
@@ -380,6 +376,8 @@ credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 220, credi
 runstickman_button = Button(screen_width // 1 - 1920, screen_height // 2 + -550, runstickman_img)
 
 
+
+
 while run:
 
 	clock.tick(fps)
@@ -397,15 +395,20 @@ while run:
 			xp_fx.play()
 		if option_button.draw():
 			main_menu = False
+			in_options = True
 			
-			options_menu()
-
-
-
-
+			
 
 		credit_button.draw()
 		runstickman_button.draw()
+	if in_options == True:
+		# Options menu
+		screen.blit(bg_img, (0,0))
+
+		if exit_button.draw():
+			main_menu = True
+			in_options = False
+
 	elif playing == True:
 		world.draw()
 
