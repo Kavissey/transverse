@@ -79,6 +79,7 @@ xp_fx = pygame.mixer.Sound('img/xp.wav')
 def options_menu():
 	screen.blit(bg_img, (0,0))
 
+
 	if exit_button.draw():
 		main_menu = True
 
@@ -241,7 +242,7 @@ class Player():
 		self.images_left = []
 		self.index = 0
 		self.counter = 0
-		for num in range(1, 9):
+		for num in range(0, 9):
 			img_right = pygame.image.load(f'img/frame-{num}.png')
 			img_right = pygame.transform.scale(img_right, (60, 80 ))
 			img_left = pygame.transform.flip(img_right, True, False)
@@ -399,6 +400,7 @@ while run:
 			main_menu = False
 			
 			options_menu()
+
 
 
 
