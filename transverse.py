@@ -30,6 +30,8 @@ main_menu = True
 in_options = False
 run = True
 playing = False
+in_credit = False
+in_skin = False
 score = 0
 level = 0
 max_levels = len(niveaux)
@@ -47,6 +49,7 @@ option_img = pygame.image.load('img/option.png')
 credit_img = pygame.image.load('img/credit.png')
 spike_img = pygame.image.load('img/spike.png')
 runstickman_img = pygame.image.load('img/runstickman.png')
+skin_img = pygame.image.load('img/skin.png')
 
 #function to reset level
 def reset_level(level):
@@ -237,7 +240,7 @@ class Player():
 		self.images_left = []
 		self.index = 0
 		self.counter = 0
-		for num in range(0, 9):
+		for num in range(1, 9):
 			img_right = pygame.image.load(f'img/frame-{num}.png')
 			img_right = pygame.transform.scale(img_right, (60, 80 ))
 			img_left = pygame.transform.flip(img_right, True, False)
@@ -374,6 +377,7 @@ exit_button = Button(screen_width // 2 - 350, screen_height // 2 + -105, exit_im
 option_button = Button(screen_width // 1 - 1200, screen_height // 2 + -50, option_img)
 credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 220, credit_img)
 runstickman_button = Button(screen_width // 1 - 1920, screen_height // 2 + -550, runstickman_img)
+skin_button = Button(screen_width // 2 - 20, screen_height // 2 + -105, skin_img)
 
 
 
@@ -397,18 +401,31 @@ while run:
 			main_menu = False
 			in_options = True
 			
-			
 
-
-		credit_button.draw()
 		runstickman_button.draw()
+		credit_button.draw()
+
 	if in_options == True:
 		# Options menu
 		screen.blit(bg_img, (0,0))
+		runstickman_button.draw()
+		skin_button.draw()
+
+		if skin_button.draw():
+			# skin menu
+
+			main_menu = True
+			in_options = False
+
+
 
 		if exit_button.draw():
 			main_menu = True
 			in_options = False
+
+
+
+
 
 	elif playing == True:
 		world.draw()
