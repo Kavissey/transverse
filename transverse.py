@@ -237,7 +237,7 @@ class Player():
 		self.images_left = []
 		self.index = 0
 		self.counter = 0
-		for num in range(1, 9):
+		for num in range(0, 9):
 			img_right = pygame.image.load(f'img/frame-{num}.png')
 			img_right = pygame.transform.scale(img_right, (60, 80 ))
 			img_left = pygame.transform.flip(img_right, True, False)
@@ -398,6 +398,7 @@ while run:
 			in_options = True
 			
 			
+
 
 		credit_button.draw()
 		runstickman_button.draw()
