@@ -54,6 +54,8 @@ skin1_img = pygame.image.load('img/skin1-1.png')
 skin2_img = pygame.image.load('img/skin2-1.png')
 skin3_img = pygame.image.load('img/skin3-1.png')
 creator_img = pygame.image.load('img/creator.png')
+creator2_img = pygame.image.load('img/foggy.png')
+nom_img = pygame.image.load('img/nom.png')
 
 #function to reset level
 def reset_level(level):
@@ -388,7 +390,8 @@ skin1_button = Button(screen_width // 1 - 1700, screen_height // 2 + -180, skin1
 skin2_button = Button(screen_width // 1 - 1300, screen_height // 2 + -300, skin2_img)
 skin3_button = Button(screen_width // 1 - 800, screen_height // 2 + -300, skin3_img)
 creator_button = Button(screen_width // 1 - 1380, screen_height // 2 + -500, creator_img)
-
+creator2_button = Button(screen_width // 1 -1450, screen_height // 2 + -200, creator2_img)
+nom_button = Button(screen_width // 1 -1120, screen_height // 2 + -150, nom_img)
 while run:
 
 	clock.tick(fps)
@@ -432,13 +435,15 @@ while run:
 
 	if in_credit == True:
 		runstickman_button.draw()
-		exit_button2.draw()
 		creator_button.draw()
+		creator2_button.draw()
+		nom_button.draw()
 
 		if exit_button2.draw():
 			main_menu = True
 			in_options = False
 			in_skin = False
+			in_credit = False
 
 
 
