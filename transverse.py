@@ -50,6 +50,10 @@ credit_img = pygame.image.load('img/credit.png')
 spike_img = pygame.image.load('img/spike.png')
 runstickman_img = pygame.image.load('img/runstickman.png')
 skin_img = pygame.image.load('img/skin.png')
+skin1_img = pygame.image.load('img/skin1-1.png')
+skin2_img = pygame.image.load('img/skin2-1.png')
+skin3_img = pygame.image.load('img/skin3-1.png')
+creator_img = pygame.image.load('img/creator.png')
 
 #function to reset level
 def reset_level(level):
@@ -117,6 +121,7 @@ class Button():
 #player create
 
 class Player():
+	skin = "skin1"
 	def __init__(self, x, y):
 		self.reset(x, y)
 
@@ -241,7 +246,7 @@ class Player():
 		self.index = 0
 		self.counter = 0
 		for num in range(1, 9):
-			img_right = pygame.image.load(f'img/frame-{num}.png')
+			img_right = pygame.image.load(f'img/{self.skin}-{num}.png')
 			img_right = pygame.transform.scale(img_right, (60, 80 ))
 			img_left = pygame.transform.flip(img_right, True, False)
 			self.images_right.append(img_right)
@@ -374,13 +379,15 @@ world = World(niveaux[0])
 restart_button = Button(screen_width // 2 - 50, screen_height // 2 + -100, restart_img)
 start_button = Button(screen_width // 2 - 20, screen_height // 2 + -105, start_img)
 exit_button = Button(screen_width // 2 - 350, screen_height // 2 + -105, exit_img)
-option_button = Button(screen_width // 1 - 1200, screen_height // 2 + -50, option_img)
-credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 220, credit_img)
+option_button = Button(screen_width // 1 - 1150, screen_height // 2 + 70, option_img)
+credit_button = Button(screen_width // 1 - 1150, screen_height // 2 + 200, credit_img)
 runstickman_button = Button(screen_width // 1 - 1920, screen_height // 2 + -550, runstickman_img)
-skin_button = Button(screen_width // 2 - 20, screen_height // 2 + -105, skin_img)
-
-
-
+skin_button = Button(screen_width // 2 - 150, screen_height // 2 + -80, skin_img)
+exit_button2 = Button(screen_width // 2 - 980, screen_height // 1 + -105, exit_img)
+skin1_button = Button(screen_width // 1 - 1700, screen_height // 2 + -180, skin1_img)
+skin2_button = Button(screen_width // 1 - 1300, screen_height // 2 + -300, skin2_img)
+skin3_button = Button(screen_width // 1 - 800, screen_height // 2 + -300, skin3_img)
+creator_button = Button(screen_width // 1 - 1380, screen_height // 2 + -500, creator_img)
 
 while run:
 
@@ -400,7 +407,10 @@ while run:
 		if option_button.draw():
 			main_menu = False
 			in_options = True
-			
+		if credit_button.draw():
+			main_menu = False
+			in_credit = True
+
 
 		runstickman_button.draw()
 		credit_button.draw()
@@ -409,19 +419,51 @@ while run:
 		# Options menu
 		screen.blit(bg_img, (0,0))
 		runstickman_button.draw()
-		skin_button.draw()
+
 
 		if skin_button.draw():
 			# skin menu
 
+			in_options = False
+			in_skin = True
+		if exit_button2.draw():
 			main_menu = True
 			in_options = False
 
+	if in_credit == True:
+		runstickman_button.draw()
+		exit_button2.draw()
+		creator_button.draw()
 
-
-		if exit_button.draw():
+		if exit_button2.draw():
 			main_menu = True
 			in_options = False
+			in_skin = False
+
+
+
+
+	if in_skin == True :
+
+		runstickman_button.draw()
+		if skin1_button.draw():
+			player.skin = "skin1"
+		if skin2_button.draw():
+			player.skin = "skin2"
+		if skin3_button.draw():
+			player.skin = "skin3"
+
+		if exit_button2.draw():
+			main_menu = True
+			in_options = False
+			in_skin = False
+
+
+
+
+
+
+
 
 
 
